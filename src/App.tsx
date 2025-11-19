@@ -15,8 +15,10 @@ import MealDetails from './components/MealDetails';
 import Home from './pages/Home';
 import { MEAL_TYPES, RECIPES } from './data/recipes';
 import { Meal, ShoppingGroup } from './types';
+import { useTelegram } from './telegram';
 
 export default function App() {
+  const { user, tg } = useTelegram();
   const [onboardingComplete, setOnboardingComplete] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -100,7 +102,7 @@ export default function App() {
               {formattedDate}
             </h2>
             <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2 animate-slide-up delay-100 opacity-0">
-              Привет, Анна <span className="text-2xl hover:animate-spin cursor-default">👋</span>
+              Привет, {user?.first_name || 'Анна'} <span className="text-2xl hover:animate-spin cursor-default">👋</span>
             </h1>
           </div>
           <button 
