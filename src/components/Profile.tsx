@@ -12,7 +12,11 @@ import {
   MapPin 
 } from 'lucide-react';
 
-const Profile = ({ onClose }) => {
+interface ProfileProps {
+  onClose: () => void;
+}
+
+const Profile: React.FC<ProfileProps> = ({ onClose }) => {
   const stats = [
     { label: 'Дней подряд', value: '12', icon: Calendar, color: 'bg-blue-100 text-blue-600' },
     { label: 'Рецептов', value: '48', icon: ChefHat, color: 'bg-green-100 text-green-600' },
@@ -100,4 +104,3 @@ const Profile = ({ onClose }) => {
 };
 
 export default Profile;
-

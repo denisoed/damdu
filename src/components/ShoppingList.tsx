@@ -1,7 +1,14 @@
 import React from 'react';
 import { ShoppingCart, Trash2, Check, Bike } from 'lucide-react';
+import { ShoppingGroup } from '../types';
 
-const ShoppingList = ({ groups, toggleItem, deleteGroup }) => {
+interface ShoppingListProps {
+  groups: ShoppingGroup[];
+  toggleItem: (groupIdx: number, itemIdx: number) => void;
+  deleteGroup: (groupIdx: number) => void;
+}
+
+const ShoppingList: React.FC<ShoppingListProps> = ({ groups, toggleItem, deleteGroup }) => {
   if (groups.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] text-gray-400 animate-fade-in">
@@ -78,4 +85,3 @@ const ShoppingList = ({ groups, toggleItem, deleteGroup }) => {
 };
 
 export default ShoppingList;
-

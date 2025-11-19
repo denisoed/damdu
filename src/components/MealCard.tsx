@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
-import { Clock, Flame, ArrowRight, RefreshCw } from 'lucide-react';
+import { RefreshCw, Clock, Flame, ArrowRight } from 'lucide-react';
+import { Meal } from '../types';
 
-const MealCard = ({ meal, onSwap, onViewDetails, index = 0 }) => {
+interface MealCardProps {
+  meal: Meal;
+  onSwap: (meal: Meal) => void;
+  onViewDetails: (meal: Meal) => void;
+  index?: number;
+}
+
+const MealCard: React.FC<MealCardProps> = ({ meal, onSwap, onViewDetails, index = 0 }) => {
   const [isSwapping, setIsSwapping] = useState(false);
 
-  const handleSwap = (e) => {
+  const handleSwap = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsSwapping(true);
     setTimeout(() => {
@@ -59,4 +67,3 @@ const MealCard = ({ meal, onSwap, onViewDetails, index = 0 }) => {
 };
 
 export default MealCard;
-

@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { ArrowRight, Clock, Flame, BookOpen, List, ShoppingCart } from 'lucide-react';
+import { Meal } from '../types';
 
-const MealDetails = ({ meal, onBack, onAddToShoppingList }) => {
-  const [activeTab, setActiveTab] = useState('recipe'); // 'recipe' or 'instruction'
+interface MealDetailsProps {
+  meal: Meal;
+  onBack: () => void;
+  onAddToShoppingList: (meal: Meal) => void;
+}
+
+const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShoppingList }) => {
+  const [activeTab, setActiveTab] = useState<'recipe' | 'instruction'>('recipe');
 
   if (!meal) return null;
 
@@ -78,7 +85,7 @@ const MealDetails = ({ meal, onBack, onAddToShoppingList }) => {
                   </ul>
                   <button 
                     onClick={() => {
-                      onAddToShoppingList(meal); // Changed to pass the whole meal object
+                      onAddToShoppingList(meal);
                       onBack();
                     }}
                     className="mt-6 w-full py-3.5 text-green-600 font-bold text-sm border border-green-200 rounded-xl hover:bg-green-50 hover:border-green-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
@@ -120,4 +127,3 @@ const MealDetails = ({ meal, onBack, onAddToShoppingList }) => {
 };
 
 export default MealDetails;
-

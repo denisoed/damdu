@@ -2,8 +2,18 @@ import React from 'react';
 import { RefreshCw, Bike } from 'lucide-react';
 import DateSelector from '../components/DateSelector';
 import MealCard from '../components/MealCard';
+import { Meal } from '../types';
 
-const Home = ({ 
+interface HomeProps {
+  selectedDate: Date;
+  setSelectedDate: (date: Date) => void;
+  dailyMenu: Meal[];
+  generateMenu: () => void;
+  handleSwapMeal: (meal: Meal) => void;
+  setSelectedMeal: (meal: Meal) => void;
+}
+
+const Home: React.FC<HomeProps> = ({ 
   selectedDate, 
   setSelectedDate, 
   dailyMenu, 
@@ -52,4 +62,3 @@ const Home = ({
 };
 
 export default Home;
-

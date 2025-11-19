@@ -14,16 +14,17 @@ import PantrySearch from './components/PantrySearch';
 import MealDetails from './components/MealDetails';
 import Home from './pages/Home';
 import { MEAL_TYPES, RECIPES } from './data/recipes';
+import { Meal, ShoppingGroup } from './types';
 
 export default function App() {
   const [onboardingComplete, setOnboardingComplete] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [dailyMenu, setDailyMenu] = useState([]);
-  const [selectedMeal, setSelectedMeal] = useState(null);
+  const [dailyMenu, setDailyMenu] = useState<Meal[]>([]);
+  const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
   
   // State for Shopping List Groups
-  const [shoppingListGroups, setShoppingListGroups] = useState([]); 
+  const [shoppingListGroups, setShoppingListGroups] = useState<ShoppingGroup[]>([]); 
 
   const [showProfile, setShowProfile] = useState(false);
 
@@ -34,7 +35,7 @@ export default function App() {
   const generateMenu = () => {
     setDailyMenu([]);
     setTimeout(() => {
-      const getMeal = (type) => {
+      const getMeal = (type: string) => {
         const options = RECIPES.filter(r => r.type === type);
         return options[Math.floor(Math.random() * options.length)];
       };
@@ -46,7 +47,7 @@ export default function App() {
     }, 50);
   };
 
-  const handleSwapMeal = (oldMeal) => {
+  const handleSwapMeal = (oldMeal: Meal) => {
     const options = RECIPES.filter(r => r.type === oldMeal.type && r.id !== oldMeal.id);
     const newMeal = options[Math.floor(Math.random() * options.length)] || oldMeal;
     
@@ -55,8 +56,8 @@ export default function App() {
     );
   };
 
-  const addToShoppingList = (meal) => {
-    const newGroup = {
+  const addToShoppingList = (meal: Meal) => {
+    const newGroup: ShoppingGroup = {
       mealTitle: meal.title,
       items: meal.ingredients.map(ing => ({ name: ing, checked: false }))
     };
@@ -64,13 +65,13 @@ export default function App() {
     setActiveTab('cart');
   };
 
-  const toggleShoppingItem = (groupIdx, itemIdx) => {
+  const toggleShoppingItem = (groupIdx: number, itemIdx: number) => {
     const newGroups = [...shoppingListGroups];
     newGroups[groupIdx].items[itemIdx].checked = !newGroups[groupIdx].items[itemIdx].checked;
     setShoppingListGroups(newGroups);
   };
 
-  const deleteShoppingGroup = (groupIdx) => {
+  const deleteShoppingGroup = (groupIdx: number) => {
     const newGroups = shoppingListGroups.filter((_, i) => i !== groupIdx);
     setShoppingListGroups(newGroups);
   };
@@ -88,7 +89,7 @@ export default function App() {
   const totalShoppingItems = shoppingListGroups.reduce((acc, group) => acc + group.items.filter(i => !i.checked).length, 0);
 
   return (
-    <div className="bg-gray-50 min-h-screen font-sans text-gray-800 max-w-md mx-auto shadow-2xl overflow-hidden relative">
+    <div className="bg-gray-50 min-h-screen font-sans text-gray-800 mx-auto overflow-hidden relative">
       <GlobalStyles />
       
       {/* Header */}
@@ -155,7 +156,7 @@ export default function App() {
       )}
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 max-w-md w-full bg-white border-t border-gray-100 flex justify-around items-center py-4 pb-6 px-2 z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <div className="fixed bottom-0 w-full bg-white border-t border-gray-100 flex justify-around items-center py-4 pb-6 px-2 z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <button 
           onClick={() => setActiveTab('home')}
           className={`flex flex-col items-center gap-1 px-4 transition-all duration-300 ${activeTab === 'home' ? 'text-green-600 -translate-y-1' : 'text-gray-400 hover:text-gray-600'}`}

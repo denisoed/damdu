@@ -1,14 +1,19 @@
 import React from 'react';
 
-const DateSelector = ({ selectedDate, onSelect }) => {
-  const dates = [];
+interface DateSelectorProps {
+  selectedDate: Date;
+  onSelect: (date: Date) => void;
+}
+
+const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelect }) => {
+  const dates: Date[] = [];
   for (let i = 0; i < 7; i++) {
     const d = new Date();
     d.setDate(d.getDate() + i);
     dates.push(d);
   }
 
-  const isSameDay = (d1, d2) => {
+  const isSameDay = (d1: Date, d2: Date) => {
     return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth();
   };
 
@@ -44,4 +49,3 @@ const DateSelector = ({ selectedDate, onSelect }) => {
 };
 
 export default DateSelector;
-
