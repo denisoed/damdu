@@ -9,8 +9,8 @@ export function useTelegram() {
     useEffect(() => {
         if (tg) {
             tg.expand();
-            tg.setHeaderColor('#fff8f0');
-            tg.setBackgroundColor('#fff8f0');
+            tg.setHeaderColor('#ffffff');
+            tg.setBackgroundColor('#ffffff');
             tg.disableVerticalSwipes();
             tg.ready();
             setIsReady(true);
