@@ -59,9 +59,17 @@ export default function App() {
   };
 
   const addToShoppingList = (meal: Meal) => {
+    const additionItems = meal.additions?.map(add => ({
+      name: add.note ? `${add.title} (${add.note})` : add.title,
+      checked: false
+    })) || [];
+
     const newGroup: ShoppingGroup = {
       mealTitle: meal.title,
-      items: meal.ingredients.map(ing => ({ name: ing, checked: false }))
+      items: [
+        ...meal.ingredients.map(ing => ({ name: ing, checked: false })),
+        ...additionItems
+      ]
     };
     setShoppingListGroups(prev => [...prev, newGroup]);
     setActiveTab('cart');

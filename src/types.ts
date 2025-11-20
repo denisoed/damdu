@@ -1,3 +1,8 @@
+export interface MealAddOn {
+  title: string;
+  note?: string;
+}
+
 export interface Meal {
   id: number;
   title: string;
@@ -7,6 +12,7 @@ export interface Meal {
   image: string;
   ingredients: string[];
   steps: string[];
+  additions?: MealAddOn[];
 }
 
 export interface ShoppingItem {
