@@ -96,10 +96,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                   key={idx}
                   onClick={handleNext}
                   style={{ animationDelay: `${idx * 100}ms` }}
-                  className="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-green-500 hover:border-bg-green-50 transition-all duration-200 font-medium text-gray-700 flex justify-between items-center group opacity-0 animate-slide-up active:scale-[0.98]"
+                  className="w-full text-left p-4 rounded-xl border border-gray-200 transition-all duration-200 font-medium text-gray-700 flex justify-between items-center opacity-0 animate-slide-up active:scale-[0.98]"
                 >
                   {opt}
-                  <ArrowRight className="text-gray-300 group-hover:text-green-600 transition-transform group-hover:translate-x-1" size={20} />
+                  <ArrowRight className="text-gray-300" size={20} />
                 </button>
               ))}
             </div>
