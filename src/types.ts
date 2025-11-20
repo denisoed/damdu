@@ -3,6 +3,12 @@ export interface MealAddOn {
   note?: string;
 }
 
+export interface MealIngredient {
+  name: string;
+  amount: number;
+  unit: string;
+}
+
 export interface Meal {
   id: number;
   title: string;
@@ -10,7 +16,7 @@ export interface Meal {
   time: string;
   calories: number;
   image: string;
-  ingredients: string[];
+  ingredients: MealIngredient[];
   steps: string[];
   additions?: MealAddOn[];
 }

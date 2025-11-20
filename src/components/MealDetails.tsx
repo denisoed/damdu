@@ -5,11 +5,26 @@ import { Meal } from '../types';
 interface MealDetailsProps {
   meal: Meal;
   onBack: () => void;
-  onAddToShoppingList: (meal: Meal) => void;
+  onAddToShoppingList: (meal: Meal, servings: number) => void;
 }
 
 const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShoppingList }) => {
-  const [activeTab, setActiveTab] = useState<'recipe' | 'instruction'>('recipe');
+  const [activeTab, setActiveTab] = useState<'products' | 'recipe'>('products');
+  const [servings, setServings] = useState(2);
+
+  const formatAmount = (value: number) => {
+    const rounded = Number(value.toFixed(2));
+    return Number.isInteger(rounded) ? rounded.toString() : rounded.toString();
+  };
+
+  const changeServings = (delta: number) => {
+    setServings(prev => {
+      const next = prev + delta;
+      if (next < 1) return 1;
+      if (next > 10) return 10;
+      return next;
+    });
+  };
 
   if (!meal) return null;
 
@@ -44,42 +59,67 @@ const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShopping
         <div className="p-6 pb-24">
           {/* Tabs */}
           <div className="flex gap-2 mb-8 animate-slide-up delay-300 opacity-0">
-            <button 
+            <button
+              onClick={() => setActiveTab('products')}
+              className={`flex-1 py-3 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all active:scale-95 ${
+                activeTab === 'products'
+                  ? 'bg-green-600 text-white shadow-lg shadow-green-200'
+                  : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <List size={16} /> Продукты
+            </button>
+            <button
               onClick={() => setActiveTab('recipe')}
               className={`flex-1 py-3 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all active:scale-95 ${
-                activeTab === 'recipe' 
-                  ? 'bg-green-600 text-white shadow-lg shadow-green-200' 
+                activeTab === 'recipe'
+                  ? 'bg-green-600 text-white shadow-lg shadow-green-200'
                   : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
               }`}
             >
               <BookOpen size={16} /> Рецепт
             </button>
-            <button 
-              onClick={() => setActiveTab('instruction')}
-              className={`flex-1 py-3 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all active:scale-95 ${
-                activeTab === 'instruction' 
-                  ? 'bg-green-600 text-white shadow-lg shadow-green-200' 
-                  : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
-              }`}
-            >
-              <List size={16} /> Инструкция
-            </button>
           </div>
 
           {/* Content Area */}
           <div className="min-h-[200px]">
-            {activeTab === 'recipe' && (
+            {activeTab === 'products' && (
               <div className="animate-slide-up delay-100">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">Порции</h3>
+                    <p className="text-sm text-gray-500">Настройте количество, мы пересчитаем продукты</p>
+                  </div>
+                  <div className="flex items-center bg-gray-100 rounded-full p-1 shadow-inner">
+                    <button
+                      onClick={() => changeServings(-1)}
+                      className="w-10 h-10 rounded-full bg-white text-gray-700 font-bold text-xl hover:bg-gray-50 active:scale-95 transition"
+                    >
+                      –
+                    </button>
+                    <span className="px-4 text-base font-semibold text-gray-900">{servings}</span>
+                    <button
+                      onClick={() => changeServings(1)}
+                      className="w-10 h-10 rounded-full bg-white text-gray-700 font-bold text-xl hover:bg-gray-50 active:scale-95 transition"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
                 <div className="mb-8">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4 flex justify-between items-center">
-                    Ингредиенты
-                    <span className="text-sm font-normal text-gray-500">{meal.ingredients.length} шт.</span>
-                  </h3>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-3">Список продуктов</h3>
                   <ul className="space-y-3">
                     {meal.ingredients.map((ing, i) => (
-                      <li key={i} className="flex items-center gap-3 text-gray-700 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                      <li
+                        key={i}
+                        className="flex items-center gap-3 text-gray-800 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-100"
+                      >
                         <div className="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" />
-                        {ing}
+                        <div className="flex-1 font-medium">{ing.name}</div>
+                        <span className="text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-lg px-3 py-1 shadow-sm">
+                          {formatAmount(ing.amount * servings)} {ing.unit}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -118,7 +158,7 @@ const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShopping
                 <div className="sticky bottom-0 pb-4 bg-white">
                   <button
                     onClick={() => {
-                      onAddToShoppingList(meal);
+                      onAddToShoppingList(meal, servings);
                       onBack();
                     }}
                     className="mt-6 w-full py-3.5 text-green-600 font-bold text-sm border border-green-200 rounded-xl hover:bg-green-50 hover:border-green-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
@@ -130,7 +170,7 @@ const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShopping
               </div>
             )}
 
-            {activeTab === 'instruction' && (
+            {activeTab === 'recipe' && (
               <div className="animate-slide-up delay-100">
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Пошаговый план</h3>
                 <div className="space-y-6 relative">

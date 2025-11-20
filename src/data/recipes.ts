@@ -12,7 +12,13 @@ export const RECIPES = [
     time: '10 мин',
     calories: 350,
     image: 'https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=800&q=80',
-    ingredients: ['Овсяные хлопья', 'Молоко', 'Клубника', 'Грецкие орехи', 'Мед'],
+    ingredients: [
+      { name: 'Овсяные хлопья', amount: 60, unit: 'г' },
+      { name: 'Молоко', amount: 200, unit: 'мл' },
+      { name: 'Клубника', amount: 80, unit: 'г' },
+      { name: 'Грецкие орехи', amount: 15, unit: 'г' },
+      { name: 'Мед', amount: 1, unit: 'ст. л.' }
+    ],
     additions: [
       { title: 'Сливочное масло', note: 'Кусочек масла сделает кашу более нежной и сытной.' },
       { title: 'Тёплый ягодный компот', note: 'Балансирует сладость каши и помогает утолить жажду.' },
@@ -34,7 +40,13 @@ export const RECIPES = [
     time: '15 мин',
     calories: 420,
     image: 'https://images.unsplash.com/photo-1525351484163-7529414395d8?auto=format&fit=crop&w=800&q=80',
-    ingredients: ['Хлеб цельнозерновой', 'Авокадо', 'Яйцо', 'Лимонный сок', 'Кунжут'],
+    ingredients: [
+      { name: 'Хлеб цельнозерновой', amount: 1, unit: 'ломтик' },
+      { name: 'Авокадо', amount: 0.5, unit: 'шт.' },
+      { name: 'Яйцо', amount: 1, unit: 'шт.' },
+      { name: 'Лимонный сок', amount: 1, unit: 'ст. л.' },
+      { name: 'Кунжут', amount: 1, unit: 'ч. л.' }
+    ],
     additions: [
       { title: 'Салат из руколы или шпината', note: 'Добавляет свежести и клетчатки к сытному тосту.' },
       { title: 'Свежесваренный кофе или матча', note: 'Идеальный утренний дуэт с тостом.' },
@@ -56,7 +68,13 @@ export const RECIPES = [
     time: '20 мин',
     calories: 380,
     image: 'https://images.unsplash.com/photo-1587334206398-489fa77005b5?auto=format&fit=crop&w=800&q=80',
-    ingredients: ['Творог 9%', 'Яйцо', 'Мука рисовая', 'Сахар или сахзам', 'Сметана'],
+    ingredients: [
+      { name: 'Творог 9%', amount: 150, unit: 'г' },
+      { name: 'Яйцо', amount: 1, unit: 'шт.' },
+      { name: 'Мука рисовая', amount: 30, unit: 'г' },
+      { name: 'Сахар или сахзам', amount: 10, unit: 'г' },
+      { name: 'Сметана', amount: 40, unit: 'г' }
+    ],
     additions: [
       { title: 'Холодная сметана или греческий йогурт', note: 'Подчёркивают нежность сырников.' },
       { title: 'Ягодный соус или варенье', note: 'Добавляет яркий вкус и легкую кислинку.' },
@@ -78,7 +96,13 @@ export const RECIPES = [
     time: '25 мин',
     calories: 550,
     image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
-    ingredients: ['Киноа', 'Куриное филе', 'Огурцы', 'Томаты черри', 'Соус терияки'],
+    ingredients: [
+      { name: 'Киноа', amount: 80, unit: 'г' },
+      { name: 'Куриное филе', amount: 150, unit: 'г' },
+      { name: 'Огурцы', amount: 80, unit: 'г' },
+      { name: 'Томаты черри', amount: 100, unit: 'г' },
+      { name: 'Соус терияки', amount: 25, unit: 'мл' }
+    ],
     additions: [
       { title: 'Маринованный имбирь', note: 'Освежает вкус и повторяет азиатские акценты блюда.' },
       { title: 'Хрустящие водоросли нори', note: 'Добавляют текстуру и полезный йод.' },
@@ -100,7 +124,13 @@ export const RECIPES = [
     time: '20 мин',
     calories: 600,
     image: 'https://images.unsplash.com/photo-1612874742237-982867143836?auto=format&fit=crop&w=800&q=80',
-    ingredients: ['Спагетти', 'Бекон', 'Яйца (желтки)', 'Пармезан', 'Черный перец'],
+    ingredients: [
+      { name: 'Спагетти', amount: 90, unit: 'г' },
+      { name: 'Бекон', amount: 60, unit: 'г' },
+      { name: 'Яйца (желтки)', amount: 1, unit: 'шт.' },
+      { name: 'Пармезан', amount: 30, unit: 'г' },
+      { name: 'Черный перец', amount: 0.5, unit: 'ч. л.' }
+    ],
     additions: [
       { title: 'Листовой салат с оливковым маслом', note: 'Добавляет свежесть к насыщенной пасте.' },
       { title: 'Чиабатта или фокачча', note: 'Подходит, чтобы собрать остатки кремового соуса.' },
@@ -122,7 +152,13 @@ export const RECIPES = [
     time: '30 мин',
     calories: 320,
     image: 'https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&w=800&q=80',
-    ingredients: ['Тыква очищенная', 'Сливки 10%', 'Лук репчатый', 'Чеснок', 'Тыквенные семечки'],
+    ingredients: [
+      { name: 'Тыква очищенная', amount: 250, unit: 'г' },
+      { name: 'Сливки 10%', amount: 80, unit: 'мл' },
+      { name: 'Лук репчатый', amount: 0.5, unit: 'шт.' },
+      { name: 'Чеснок', amount: 1, unit: 'зуб.' },
+      { name: 'Тыквенные семечки', amount: 15, unit: 'г' }
+    ],
     additions: [
       { title: 'Хрустящие гренки с чесноком', note: 'Дают супу текстуру и сытность.' },
       { title: 'Капля трюфельного или тыквенного масла', note: 'Раскрывает аромат супа перед подачей.' },
@@ -144,7 +180,13 @@ export const RECIPES = [
     time: '25 мин',
     calories: 480,
     image: 'https://images.unsplash.com/photo-1467003909585-2f8a7270028d?auto=format&fit=crop&w=800&q=80',
-    ingredients: ['Стейк лосося', 'Кабачок', 'Перец болгарский', 'Лимон', 'Оливковое масло'],
+    ingredients: [
+      { name: 'Стейк лосося', amount: 180, unit: 'г' },
+      { name: 'Кабачок', amount: 120, unit: 'г' },
+      { name: 'Перец болгарский', amount: 120, unit: 'г' },
+      { name: 'Лимон', amount: 0.25, unit: 'шт.' },
+      { name: 'Оливковое масло', amount: 1, unit: 'ст. л.' }
+    ],
     additions: [
       { title: 'Запечённый молодой картофель', note: 'Сделает ужин более сытным.' },
       { title: 'Соус тартар или йогуртовый дип', note: 'Подчёркивает вкус рыбы без тяжести.' },
@@ -166,7 +208,13 @@ export const RECIPES = [
     time: '15 мин',
     calories: 350,
     image: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80',
-    ingredients: ['Куриная грудка', 'Фета', 'Оливки каламата', 'Огурцы', 'Томаты'],
+    ingredients: [
+      { name: 'Куриная грудка', amount: 120, unit: 'г' },
+      { name: 'Фета', amount: 70, unit: 'г' },
+      { name: 'Оливки каламата', amount: 40, unit: 'г' },
+      { name: 'Огурцы', amount: 120, unit: 'г' },
+      { name: 'Томаты', amount: 150, unit: 'г' }
+    ],
     additions: [
       { title: 'Тёплая пита или лаваш', note: 'Можно макать в сок салата или использовать как основу для гирос.' },
       { title: 'Соус дзадзики', note: 'Освежает и дополняет греческие вкусы.' },
@@ -187,7 +235,13 @@ export const RECIPES = [
     time: '40 мин',
     calories: 520,
     image: 'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?auto=format&fit=crop&w=800&q=80',
-    ingredients: ['Говядина', 'Стручковая фасоль', 'Лук', 'Томатная паста', 'Специи (паприка, чили)'],
+    ingredients: [
+      { name: 'Говядина', amount: 200, unit: 'г' },
+      { name: 'Стручковая фасоль', amount: 120, unit: 'г' },
+      { name: 'Лук', amount: 0.5, unit: 'шт.' },
+      { name: 'Томатная паста', amount: 2, unit: 'ст. л.' },
+      { name: 'Специи (паприка, чили)', amount: 1, unit: 'ч. л.' }
+    ],
     additions: [
       { title: 'Салат шакароб', note: 'Свежие томаты и лук помогают сбалансировать сытное мясо.' },
       { title: 'Тонкий лаваш или лепешка', note: 'Удобно подавать, чтобы собирать подливку.' },

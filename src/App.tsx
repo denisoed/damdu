@@ -58,16 +58,26 @@ export default function App() {
     );
   };
 
-  const addToShoppingList = (meal: Meal) => {
+  const addToShoppingList = (meal: Meal, servings: number) => {
+    const formatAmount = (value: number) => {
+      const rounded = Number(value.toFixed(2));
+      return Number.isInteger(rounded) ? rounded.toString() : rounded.toString();
+    };
+
     const additionItems = meal.additions?.map(add => ({
       name: add.note ? `${add.title} (${add.note})` : add.title,
       checked: false
     })) || [];
 
+    const ingredientItems = meal.ingredients.map(ing => ({
+      name: `${ing.name} — ${formatAmount(ing.amount * servings)} ${ing.unit}`,
+      checked: false
+    }));
+
     const newGroup: ShoppingGroup = {
       mealTitle: meal.title,
       items: [
-        ...meal.ingredients.map(ing => ({ name: ing, checked: false })),
+        ...ingredientItems,
         ...additionItems
       ]
     };
