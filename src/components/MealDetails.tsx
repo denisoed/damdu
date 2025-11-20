@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Clock, Flame, BookOpen, List, ShoppingCart } from 'lucide-react';
+import { ArrowRight, Clock, Flame, BookOpen, List, ShoppingCart, Sparkles } from 'lucide-react';
 import { Meal } from '../types';
 
 interface MealDetailsProps {
@@ -70,9 +70,39 @@ const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShopping
           <div className="min-h-[200px]">
             {activeTab === 'recipe' && (
               <div className="animate-slide-up delay-100">
+                {meal.additions?.length ? (
+                  <div className="mb-8">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-1 bg-green-50 text-green-700 rounded-lg text-[11px] font-bold uppercase tracking-wide">
+                          Дополнить блюдо
+                        </span>
+                        <Sparkles size={16} className="text-green-500" />
+                      </div>
+                      <span className="text-xs text-gray-500">Идеи к подаче</span>
+                    </div>
+                    <div className="grid gap-3">
+                      {meal.additions.map((addition, i) => (
+                        <div
+                          key={`${addition.title}-${i}`}
+                          className="p-3 rounded-xl border border-gray-100 bg-gradient-to-r from-white to-green-50/40 shadow-sm flex gap-3 items-start"
+                        >
+                          <div className="w-10 h-10 rounded-full bg-green-100 text-green-700 font-bold flex items-center justify-center shadow-inner">
+                            +
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-gray-900 leading-snug">{addition.title}</p>
+                            {addition.note && <p className="text-xs text-gray-600 mt-1 leading-relaxed">{addition.note}</p>}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
                 <div className="mb-8">
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex justify-between items-center">
-                    Ингредиенты 
+                    Ингредиенты
                     <span className="text-sm font-normal text-gray-500">{meal.ingredients.length} шт.</span>
                   </h3>
                   <ul className="space-y-3">
