@@ -25,6 +25,12 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
 
   const featureIcons = [UtensilsCrossed, ShoppingCart, Search];
 
+  const featureStyles = [
+    { color: 'text-green-600', bg: 'bg-green-50' },
+    { color: 'text-orange-600', bg: 'bg-orange-50' },
+    { color: 'text-blue-600', bg: 'bg-blue-50' }
+  ];
+
   const stepsCount = questions.length + 1;
 
   const handleNext = () => {
@@ -59,10 +65,14 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               {["Личный план питания на каждый день", "Список покупок по рецептам", "Поиск блюд по тому, что есть дома"].map((text, idx) => (
                 <div
                   key={text}
-                  className="p-4 rounded-xl border border-gray-200 bg-gray-50/60 text-gray-700 font-medium flex items-start gap-3 animate-slide-up opacity-0"
+                  className="p-4 rounded-xl border border-gray-200 bg-white text-gray-700 font-medium flex items-center gap-3 animate-slide-up opacity-0"
                   style={{ animationDelay: `${idx * 100}ms` }}
                 >
-                  <span className="text-lg text-green-600">{React.createElement(featureIcons[idx], { size: 20 })}</span>
+                  <span
+                    className={`flex items-center justify-center w-10 h-10 rounded-lg ${featureStyles[idx].bg} ${featureStyles[idx].color}`}
+                  >
+                    {React.createElement(featureIcons[idx], { size: 20 })}
+                  </span>
                   <span>{text}</span>
                 </div>
               ))}
