@@ -5,19 +5,70 @@ interface OnboardingProps {
   onComplete: () => void;
 }
 
+type Option = {
+  title: string;
+  helper?: string;
+  badge?: string;
+};
+
+type Question = {
+  title: string;
+  description?: string;
+  options: Option[];
+};
+
 const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
-  const questions = [
+  const questions: Question[] = [
     {
-      title: "Какая у вас цель?",
-      options: ["Питаться здоровее", "Сэкономить время", "Похудеть", "Набрать массу"]
+      title: "Для кого готовим?",
+      description: "Подберем рецепты и покажем нужное количество ингредиентов.",
+      options: [
+        {
+          title: "Для всей семьи",
+          helper: "5+ порций, чтобы всем хватило",
+          badge: "Домохозяйки выбирают это"
+        },
+        {
+          title: "Для себя",
+          helper: "1-2 порции без лишних остатков",
+          badge: "Персональный рацион"
+        },
+        {
+          title: "Для пары",
+          helper: "2-3 порции, можно с запасом",
+          badge: "Совместные ужины"
+        }
+      ]
     },
     {
-      title: "Сколько времени есть на готовку?",
-      options: ["До 15 минут", "30-40 минут", "Люблю готовить долго", "Не хочу готовить"]
+      title: "Какая цель питания?",
+      description: "Соберем меню под ваш результат.",
+      options: [
+        { title: "Здоровое питание", helper: "Баланс БЖУ без сложностей" },
+        { title: "Похудение", helper: "Контроль калорий и простые блюда" },
+        { title: "Набор массы", helper: "Больше белка и сытные порции" },
+        { title: "Экономия времени", helper: "Минимум готовки и посуды" }
+      ]
     },
     {
-      title: "Есть ли аллергии?",
-      options: ["Нет", "Глютен", "Лактоза", "Орехи"]
+      title: "Сколько порций готовить?",
+      description: "Мы покажем точные граммовки и масштабируем рецепты.",
+      options: [
+        { title: "1-2 порции", helper: "На себя или перекус" },
+        { title: "3-4 порции", helper: "Небольшая семья" },
+        { title: "5-6 порций", helper: "Большая семья или гости" },
+        { title: "7+ порций", helper: "Запас на несколько приемов" }
+      ]
+    },
+    {
+      title: "Есть ли ограничения?",
+      description: "Уберем нежелательные продукты из меню.",
+      options: [
+        { title: "Нет ограничений" },
+        { title: "Без глютена" },
+        { title: "Без лактозы" },
+        { title: "Без орехов" }
+      ]
     }
   ];
 
@@ -70,12 +121,16 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               <p className="text-gray-500">
                 Приложение составит готовое меню на день и на неделю.
                 <br />
-                Без стресса. Без выбора. Без головной боли.
+                Учитываем цели и количество порций — все ингредиенты сразу в списке покупок.
               </p>
             </div>
 
             <div className="space-y-3">
-              {["Личный план питания на каждый день", "Список покупок по рецептам", "Поиск блюд по тому, что есть дома"].map((text, idx) => (
+              {[
+                "Личный план питания на каждый день",
+                "Список покупок с точными граммовками",
+                "Поиск блюд по тому, что есть дома"
+              ].map((text, idx) => (
                 <div
                   key={text}
                   className="p-4 rounded-xl border border-gray-200 bg-white text-gray-700 font-medium flex items-center gap-3 animate-slide-up opacity-0"
@@ -86,9 +141,17 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                   >
                     {React.createElement(featureIcons[idx], { size: 20 })}
                   </span>
-                  <span>{text}</span>
+                  <div>
+                    <p className="font-semibold text-gray-900">{text}</p>
+                    {idx === 0 && <p className="text-sm text-gray-500">Для мам, которые готовят сразу на 4-6 человек.</p>}
+                    {idx === 1 && <p className="text-sm text-gray-500">Чтобы всегда хватало на всю семью.</p>}
+                  </div>
                 </div>
               ))}
+            </div>
+
+            <div className="p-4 rounded-xl bg-green-50 border border-green-100 text-green-800 text-sm">
+              Сразу учитываем, на сколько человек готовите: рецепты автоматически масштабируются, а список покупок показывает точное количество.
             </div>
 
             <button
@@ -140,17 +203,26 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         ) : (
           <div key={step} className="animate-slide-up">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">{questions[step - 1].title}</h1>
-            <p className="text-gray-500 mb-8">Мы подберем меню персонально для вас.</p>
+            <p className="text-gray-500 mb-8">{questions[step - 1].description || 'Мы подберем меню персонально для вас.'}</p>
 
             <div className="space-y-3">
               {questions[step - 1].options.map((opt, idx) => (
                 <button
                   key={idx}
-                  onClick={() => handleOptionSelect(opt, step - 1)}
+                  onClick={() => handleOptionSelect(opt.title, step - 1)}
                   style={{ animationDelay: `${idx * 100}ms` }}
-                  className="group w-full text-left p-4 rounded-xl border border-gray-200 transition-all duration-200 font-medium text-gray-700 flex justify-between items-center opacity-0 animate-slide-up active:scale-[0.98] active:bg-green-50 active:border-green-200 active:text-green-800"
+                  className="group w-full text-left p-4 rounded-xl border border-gray-200 transition-all duration-200 font-medium text-gray-700 flex justify-between items-center gap-3 opacity-0 animate-slide-up active:scale-[0.98] active:bg-green-50 active:border-green-200 active:text-green-800"
                 >
-                  {opt}
+                  <div className="flex flex-col gap-1">
+                    <span className="text-lg font-semibold text-gray-900">{opt.title}</span>
+                    {opt.helper && <span className="text-sm text-gray-500">{opt.helper}</span>}
+                    {opt.badge && (
+                      <span className="inline-flex w-fit items-center gap-1 px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                        {opt.badge}
+                      </span>
+                    )}
+                  </div>
                   <ArrowRight className="text-gray-300 transition-transform duration-200 group-active:text-green-500 group-active:translate-x-1" size={20} />
                 </button>
               ))}
