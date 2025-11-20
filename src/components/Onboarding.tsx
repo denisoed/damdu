@@ -15,6 +15,7 @@ type Question = {
   title: string;
   description?: string;
   options: Option[];
+  shouldShow?: (answers: (string | null)[]) => boolean;
 };
 
 const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
@@ -48,17 +49,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         { title: "Похудение", helper: "Контроль калорий и простые блюда" },
         { title: "Набор массы", helper: "Больше белка и сытные порции" },
         { title: "Экономия времени", helper: "Минимум готовки и посуды" }
-      ]
-    },
-    {
-      title: "Сколько порций готовить?",
-      description: "Мы покажем точные граммовки и масштабируем рецепты.",
-      options: [
-        { title: "1-2 порции", helper: "На себя или перекус" },
-        { title: "3-4 порции", helper: "Небольшая семья" },
-        { title: "5-6 порций", helper: "Большая семья или гости" },
-        { title: "7+ порций", helper: "Запас на несколько приемов" }
-      ]
+      ],
+      shouldShow: answers => answers[0] === "Для себя"
     },
     {
       title: "Есть ли ограничения?",
@@ -77,6 +69,15 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
     Array(questions.length).fill(null)
   );
 
+  const getVisibleQuestions = (currentAnswers = answers) =>
+    questions
+      .map((question, idx) => ({ question, idx }))
+      .filter(({ question }) =>
+        question.shouldShow ? question.shouldShow(currentAnswers) : true
+      );
+
+  const visibleQuestions = getVisibleQuestions();
+
   const featureIcons = [UtensilsCrossed, ShoppingCart, Search];
 
   const featureStyles = [
@@ -85,7 +86,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
     { color: 'text-blue-600', bg: 'bg-blue-50' }
   ];
 
-  const stepsCount = questions.length + 2;
+  const stepsCount = visibleQuestions.length + 2;
   const isSummaryStep = step === stepsCount - 1;
 
   const handleStart = () => {
@@ -97,12 +98,20 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
   };
 
   const handleOptionSelect = (option: string, questionIndex: number) => {
-    setAnswers(prev => {
-      const updated = [...prev];
-      updated[questionIndex] = option;
-      return updated;
-    });
-    setStep(prev => Math.min(prev + 1, stepsCount - 1));
+    const updatedAnswers = [...answers];
+    updatedAnswers[questionIndex] = option;
+    setAnswers(updatedAnswers);
+
+    const updatedVisible = getVisibleQuestions(updatedAnswers);
+    const currentVisibleIndex = updatedVisible.findIndex(
+      ({ idx }) => idx === questionIndex
+    );
+    const nextStep = Math.min(
+      currentVisibleIndex + 2,
+      updatedVisible.length + 1
+    );
+
+    setStep(nextStep);
   };
 
   return (
@@ -150,10 +159,6 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               ))}
             </div>
 
-            <div className="p-4 rounded-xl bg-green-50 border border-green-100 text-green-800 text-sm">
-              Сразу учитываем, на сколько человек готовите: рецепты автоматически масштабируются, а список покупок показывает точное количество.
-            </div>
-
             <button
               onClick={handleStart}
               className="w-full p-4 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors active:scale-[0.98]"
@@ -169,7 +174,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             </div>
 
             <div className="space-y-3">
-              {questions.map((question, idx) => (
+              {visibleQuestions.map(({ question, idx }) => (
                 <div
                   key={question.title}
                   className="p-4 rounded-xl border border-gray-200 bg-white flex items-center justify-between gap-3"
@@ -202,14 +207,14 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
           </div>
         ) : (
           <div key={step} className="animate-slide-up">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{questions[step - 1].title}</h1>
-            <p className="text-gray-500 mb-8">{questions[step - 1].description || 'Мы подберем меню персонально для вас.'}</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">{visibleQuestions[step - 1].question.title}</h1>
+            <p className="text-gray-500 mb-8">{visibleQuestions[step - 1].question.description || 'Мы подберем меню персонально для вас.'}</p>
 
             <div className="space-y-3">
-              {questions[step - 1].options.map((opt, idx) => (
+              {visibleQuestions[step - 1].question.options.map((opt, idx) => (
                 <button
                   key={idx}
-                  onClick={() => handleOptionSelect(opt.title, step - 1)}
+                  onClick={() => handleOptionSelect(opt.title, visibleQuestions[step - 1].idx)}
                   style={{ animationDelay: `${idx * 100}ms` }}
                   className="group w-full text-left p-4 rounded-xl border border-gray-200 transition-all duration-200 font-medium text-gray-700 flex justify-between items-center gap-3 opacity-0 animate-slide-up active:scale-[0.98] active:bg-green-50 active:border-green-200 active:text-green-800"
                 >
