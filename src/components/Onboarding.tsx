@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, ShoppingCart, Search, UtensilsCrossed } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ShoppingCart, Search, UtensilsCrossed } from 'lucide-react';
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -39,6 +39,10 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
 
   const handleStart = () => {
     setStep(1);
+  };
+
+  const handleBack = () => {
+    setStep(prev => Math.max(prev - 1, 0));
   };
 
   const handleOptionSelect = (option: string, questionIndex: number) => {
@@ -105,23 +109,33 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               {questions.map((question, idx) => (
                 <div
                   key={question.title}
-                  className="p-4 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-between gap-3"
+                  className="p-4 rounded-xl border border-gray-200 bg-white flex items-center justify-between gap-3"
                 >
                   <div>
                     <p className="text-sm text-gray-500 mb-1">{question.title}</p>
                     <p className="text-lg font-semibold text-gray-900">{answers[idx] || 'Не выбрано'}</p>
                   </div>
-                  <ArrowRight className="text-gray-300" size={20} />
+                  <Check className="text-green-500" size={20} />
                 </div>
               ))}
             </div>
 
-            <button
-              onClick={onComplete}
-              className="w-full p-4 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors active:scale-[0.98]"
-            >
-              Поехали!
-            </button>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={handleBack}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 active:scale-[0.98]"
+              >
+                <ArrowLeft size={18} />
+                Назад
+              </button>
+
+              <button
+                onClick={onComplete}
+                className="w-full p-4 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors active:scale-[0.98]"
+              >
+                Поехали!
+              </button>
+            </div>
           </div>
         ) : (
           <div key={step} className="animate-slide-up">
@@ -141,6 +155,14 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                 </button>
               ))}
             </div>
+
+            <button
+              onClick={handleBack}
+              className="mt-6 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 active:scale-[0.98]"
+            >
+              <ArrowLeft size={18} />
+              Назад
+            </button>
           </div>
         )}
       </div>
