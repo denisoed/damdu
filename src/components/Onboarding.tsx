@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ShoppingCart, Search, UtensilsCrossed } from 'lucide-react';
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -22,6 +22,8 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
       options: ["Нет", "Глютен", "Лактоза", "Орехи"]
     }
   ];
+
+  const featureIcons = [UtensilsCrossed, ShoppingCart, Search];
 
   const stepsCount = questions.length + 1;
 
@@ -60,7 +62,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                   className="p-4 rounded-xl border border-gray-200 bg-gray-50/60 text-gray-700 font-medium flex items-start gap-3 animate-slide-up opacity-0"
                   style={{ animationDelay: `${idx * 100}ms` }}
                 >
-                  <span className="text-lg">{['🍽️', '🛒', '🔍'][idx]}</span>
+                  <span className="text-lg text-green-600">{React.createElement(featureIcons[idx], { size: 20 })}</span>
                   <span>{text}</span>
                 </div>
               ))}
