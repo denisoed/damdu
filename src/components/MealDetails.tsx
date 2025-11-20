@@ -6,9 +6,11 @@ interface MealDetailsProps {
   meal: Meal;
   onBack: () => void;
   onAddToShoppingList: (meal: Meal, servings: number) => void;
+  isInShoppingList: boolean;
+  onOpenShoppingList: () => void;
 }
 
-const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShoppingList }) => {
+const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShoppingList, isInShoppingList, onOpenShoppingList }) => {
   const [activeTab, setActiveTab] = useState<'products' | 'recipe'>('products');
   const [servings, setServings] = useState(2);
 
@@ -158,13 +160,23 @@ const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShopping
                 <div className="sticky bottom-0 pb-4 bg-white">
                   <button
                     onClick={() => {
+                      if (isInShoppingList) {
+                        onBack();
+                        onOpenShoppingList();
+                        return;
+                      }
+
                       onAddToShoppingList(meal, servings);
                       onBack();
                     }}
-                    className="mt-6 w-full py-3.5 text-green-600 font-bold text-sm border border-green-200 rounded-xl hover:bg-green-50 hover:border-green-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    className={`mt-6 w-full py-3.5 font-bold text-sm rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg ${
+                      isInShoppingList
+                        ? 'bg-gray-900 text-white hover:bg-gray-800 shadow-gray-200'
+                        : 'bg-green-600 text-white hover:bg-green-700 shadow-green-200'
+                    }`}
                   >
                     <ShoppingCart size={18} />
-                    + Добавить в покупки
+                    {isInShoppingList ? 'Перейти в покупки' : '+ Добавить в покупки'}
                   </button>
                 </div>
               </div>

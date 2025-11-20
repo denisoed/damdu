@@ -27,6 +27,7 @@ export interface ShoppingItem {
 }
 
 export interface ShoppingGroup {
+  mealId: number;
   mealTitle: string;
   items: ShoppingItem[];
 }

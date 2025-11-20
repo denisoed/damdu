@@ -24,9 +24,9 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dailyMenu, setDailyMenu] = useState<Meal[]>([]);
   const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
-  
+
   // State for Shopping List Groups
-  const [shoppingListGroups, setShoppingListGroups] = useState<ShoppingGroup[]>([]); 
+  const [shoppingListGroups, setShoppingListGroups] = useState<ShoppingGroup[]>([]);
 
   const [showProfile, setShowProfile] = useState(false);
 
@@ -59,13 +59,18 @@ export default function App() {
   };
 
   const addToShoppingList = (meal: Meal, servings: number) => {
+    if (shoppingListGroups.some(group => group.mealId === meal.id)) {
+      setActiveTab('cart');
+      return;
+    }
+
     const formatAmount = (value: number) => {
       const rounded = Number(value.toFixed(2));
       return Number.isInteger(rounded) ? rounded.toString() : rounded.toString();
     };
 
     const additionItems = meal.additions?.map(add => ({
-      name: add.note ? `${add.title} (${add.note})` : add.title,
+      name: add.title,
       checked: false
     })) || [];
 
@@ -75,6 +80,7 @@ export default function App() {
     }));
 
     const newGroup: ShoppingGroup = {
+      mealId: meal.id,
       mealTitle: meal.title,
       items: [
         ...ingredientItems,
@@ -96,6 +102,9 @@ export default function App() {
     setShoppingListGroups(newGroups);
   };
 
+  const isMealInShoppingList = (mealId: number) =>
+    shoppingListGroups.some(group => group.mealId === mealId);
+
   if (!onboardingComplete) {
     return (
       <>
@@ -107,6 +116,7 @@ export default function App() {
 
   const formattedDate = selectedDate.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
   const totalShoppingItems = shoppingListGroups.reduce((acc, group) => acc + group.items.filter(i => !i.checked).length, 0);
+  const isSelectedMealInShoppingList = selectedMeal ? isMealInShoppingList(selectedMeal.id) : false;
 
   return (
     <div className="bg-gray-50 min-h-screen font-sans text-gray-800 mx-auto overflow-hidden relative">
@@ -164,10 +174,12 @@ export default function App() {
 
       {/* Modals */}
       {selectedMeal && (
-        <MealDetails 
-          meal={selectedMeal} 
-          onBack={() => setSelectedMeal(null)} 
+        <MealDetails
+          meal={selectedMeal}
+          onBack={() => setSelectedMeal(null)}
           onAddToShoppingList={addToShoppingList}
+          isInShoppingList={isSelectedMealInShoppingList}
+          onOpenShoppingList={() => setActiveTab('cart')}
         />
       )}
 
