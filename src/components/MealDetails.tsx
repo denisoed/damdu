@@ -83,16 +83,6 @@ const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShopping
                       </li>
                     ))}
                   </ul>
-                  <button 
-                    onClick={() => {
-                      onAddToShoppingList(meal);
-                      onBack();
-                    }}
-                    className="mt-6 w-full py-3.5 text-green-600 font-bold text-sm border border-green-200 rounded-xl hover:bg-green-50 hover:border-green-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                  >
-                     <ShoppingCart size={18} />
-                    + Добавить в покупки
-                  </button>
                 </div>
 
                 {meal.additions?.length ? (
@@ -124,6 +114,19 @@ const MealDetails: React.FC<MealDetailsProps> = ({ meal, onBack, onAddToShopping
                     </div>
                   </div>
                 ) : null}
+
+                <div className="sticky bottom-0 pb-4 bg-white">
+                  <button
+                    onClick={() => {
+                      onAddToShoppingList(meal);
+                      onBack();
+                    }}
+                    className="mt-6 w-full py-3.5 text-green-600 font-bold text-sm border border-green-200 rounded-xl hover:bg-green-50 hover:border-green-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                  >
+                    <ShoppingCart size={18} />
+                    + Добавить в покупки
+                  </button>
+                </div>
               </div>
             )}
 
