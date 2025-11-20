@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { ArrowRight, ShoppingCart, Search, UtensilsCrossed } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ShoppingCart, Search, UtensilsCrossed } from 'lucide-react';
 
 interface OnboardingProps {
   onComplete: () => void;
 }
 
 const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
-  const [step, setStep] = useState(0);
-
   const questions = [
     {
       title: "Какая у вас цель?",
@@ -23,6 +21,11 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
     }
   ];
 
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<(string | null)[]>(
+    Array(questions.length).fill(null)
+  );
+
   const featureIcons = [UtensilsCrossed, ShoppingCart, Search];
 
   const featureStyles = [
@@ -31,14 +34,24 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
     { color: 'text-blue-600', bg: 'bg-blue-50' }
   ];
 
-  const stepsCount = questions.length + 1;
+  const stepsCount = questions.length + 2;
+  const isSummaryStep = step === stepsCount - 1;
 
-  const handleNext = () => {
-    if (step < stepsCount - 1) {
-      setStep(step + 1);
-    } else {
-      onComplete();
-    }
+  const handleStart = () => {
+    setStep(1);
+  };
+
+  const handleBack = () => {
+    setStep(prev => Math.max(prev - 1, 0));
+  };
+
+  const handleOptionSelect = (option: string, questionIndex: number) => {
+    setAnswers(prev => {
+      const updated = [...prev];
+      updated[questionIndex] = option;
+      return updated;
+    });
+    setStep(prev => Math.min(prev + 1, stepsCount - 1));
   };
 
   return (
@@ -79,11 +92,50 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             </div>
 
             <button
-              onClick={handleNext}
+              onClick={handleStart}
               className="w-full p-4 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors active:scale-[0.98]"
             >
               Начать
             </button>
+          </div>
+        ) : isSummaryStep ? (
+          <div className="animate-slide-up space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Готово! Вот что вы выбрали</h1>
+              <p className="text-gray-500">Мы учтем это, чтобы подобрать персональное меню и список покупок.</p>
+            </div>
+
+            <div className="space-y-3">
+              {questions.map((question, idx) => (
+                <div
+                  key={question.title}
+                  className="p-4 rounded-xl border border-gray-200 bg-white flex items-center justify-between gap-3"
+                >
+                  <div>
+                    <p className="text-sm text-gray-500 mb-1">{question.title}</p>
+                    <p className="text-lg font-semibold text-gray-900">{answers[idx] || 'Не выбрано'}</p>
+                  </div>
+                  <Check className="text-green-500" size={20} />
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={handleBack}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 active:scale-[0.98]"
+              >
+                <ArrowLeft size={18} />
+                Назад
+              </button>
+
+              <button
+                onClick={onComplete}
+                className="w-full p-4 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors active:scale-[0.98]"
+              >
+                Поехали!
+              </button>
+            </div>
           </div>
         ) : (
           <div key={step} className="animate-slide-up">
@@ -94,15 +146,23 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               {questions[step - 1].options.map((opt, idx) => (
                 <button
                   key={idx}
-                  onClick={handleNext}
+                  onClick={() => handleOptionSelect(opt, step - 1)}
                   style={{ animationDelay: `${idx * 100}ms` }}
-                  className="w-full text-left p-4 rounded-xl border border-gray-200 transition-all duration-200 font-medium text-gray-700 flex justify-between items-center opacity-0 animate-slide-up active:scale-[0.98]"
+                  className="group w-full text-left p-4 rounded-xl border border-gray-200 transition-all duration-200 font-medium text-gray-700 flex justify-between items-center opacity-0 animate-slide-up active:scale-[0.98] active:bg-green-50 active:border-green-200 active:text-green-800"
                 >
                   {opt}
-                  <ArrowRight className="text-gray-300" size={20} />
+                  <ArrowRight className="text-gray-300 transition-transform duration-200 group-active:text-green-500 group-active:translate-x-1" size={20} />
                 </button>
               ))}
             </div>
+
+            <button
+              onClick={handleBack}
+              className="mt-6 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 active:scale-[0.98]"
+            >
+              <ArrowLeft size={18} />
+              Назад
+            </button>
           </div>
         )}
       </div>
