@@ -45,8 +45,12 @@ const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         {step === 0 ? (
           <div className="animate-slide-up space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Добро пожаловать в Damdu</h1>
-              <p className="text-gray-500">Мы составим сбалансированное меню и поможем собрать покупки за несколько тапов.</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Устали каждый день думать “Что сегодня приготовить?”</h1>
+              <p className="text-gray-500">
+                Приложение составит готовое меню на день и на неделю.
+                <br />
+                Без стресса. Без выбора. Без головной боли.
+              </p>
             </div>
 
             <div className="space-y-3">
